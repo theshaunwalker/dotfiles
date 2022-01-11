@@ -39,9 +39,11 @@ while test $# -gt 0; do
 done
 
 # Set macOS defaults
+echo "› $DOTFILES/macos/set-defaults.sh"
 $DOTFILES/macos/set-defaults.sh
 
 # Install homebrew
+echo "› $DOTFILES/homebrew/install.sh 2>&1"
 $DOTFILES/homebrew/install.sh 2>&1
 
 # Upgrade homebrew
