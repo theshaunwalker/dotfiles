@@ -23,4 +23,16 @@ then
     install_composer
 fi
 
+# symlink the my-php-cli.ini file that *.symlink should have already linked to $HOME
+# into all of the homebrew php's conf.d directories
+# Same extra ini file for every version. Assuming
+link_cli_ini () {
+  find /opt/homebrew/etc/php -type d -name '*conf.d*' | while read found_dir
+  do
+    link_file ~/.my-php-cli.ini $found_dir/1-my-php-cli.ini
+  done
+}
+# Symlink custom CLI php ini stuff to homebrew package locations
+link_cli_ini
+
 return 0
