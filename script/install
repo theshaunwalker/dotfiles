@@ -12,14 +12,14 @@ source script/_helpers
 
 ensure_symlinks
 
-echo ""
-echo "Installing brew packages"
-echo ""
+enter_section "Installing brew packages"
 find . -name brew.txt | \
     while read brewpacks ; \
-    do echo "› brew install --quiet $(cat ${brewpacks})" && brew install --quiet $(cat "${brewpacks}") && echo "" ; \
+    do print_info "brew install --quiet $(cat ${brewpacks})" && brew install --quiet $(cat "${brewpacks}") ; \
     done
+exit_section
 
+enter_section "Running installers"
 # find the installers and run them iteratively
-find . -name install.sh | while read installer ; do echo "› Running ${installer}" && sh -c "${installer}" ; done
-
+find . -name install.sh | while read installer ; do print_info "Running ${installer}" && sh -c "${installer}" ; done
+exit_section

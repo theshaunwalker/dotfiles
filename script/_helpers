@@ -1,19 +1,53 @@
 #!/usr/bin/env bash
 
-info () {
-  printf "\r  [ \033[0;34m..\033[0m ] $1\n"
+section_count=0
+
+section_padding () {
+  for ((i=0;i<section_count;i++));
+  do
+    printf "  "
+  done
 }
 
-user () {
-  printf "\r  [ \033[0;33m??\033[0m ] $1\n"
+enter_section () {
+  section_padding
+  printf "[\033[1;37m====\033[0m] \n"
+  section_padding
+  printf "[\033[1;37m====\033[0m] $1\n"
+  section_padding
+  printf "[\033[1;37m====\033[0m] \n"
+  ((section_count++))
+
+  return 0
 }
 
-success () {
-  printf "\r\033[2K  [ \033[0;32mOK\033[0m ] $1\n"
+exit_section () {
+  ((section_count--))
+  printf "\n\n"
 }
 
-fail () {
-  printf "\r\033[2K  [\033[0;31mFAIL\033[0m] $1\n"
+print_output () {
+  section_padding
+  printf "       $1\n"
+}
+print_info () {
+  section_padding
+  printf "[ \033[0;34m..\033[0m ] $1\n"
+}
+
+print_prompt () {
+  section_padding
+  printf "[ \033[0;33m??\033[0m ] $1\n"
+}
+
+print_success () {
+  section_padding
+  printf "\033[2K  [ \033[0;32mOK\033[0m ] $1\n"
+}
+
+print_error () {
+  section_padding
+  printf "\033[2K  [\033[0;31mFAIL\033[0m] $1\n"
   echo ''
   exit
 }
@@ -26,7 +60,7 @@ link_file () {
 
   if cmp -s $src $dst
   then
-      info "$src is identical to $dst - skipping symlink"
+      print_info "$src is identical to $dst - skipping symlink"
       return 0
   fi
 
@@ -45,7 +79,7 @@ link_file () {
 
       else
 
-        user "File already exists: $dst ($(basename "$src")), what do you want to do?\n\
+        print_prompt "File already exists: $dst ($(basename "$src")), what do you want to do?\n\
         [s]kip, [S]kip all, [o]verwrite, [O]verwrite all, [b]ackup, [B]ackup all?"
         read -n 1 action
 
@@ -77,25 +111,25 @@ link_file () {
     if [ "$overwrite" == "true" ]
     then
       rm -rf "$dst"
-      success "removed $dst"
+      print_success "removed $dst"
     fi
 
     if [ "$backup" == "true" ]
     then
       mv "$dst" "${dst}.backup"
-      success "moved $dst to ${dst}.backup"
+      print_success "moved $dst to ${dst}.backup"
     fi
 
     if [ "$skip" == "true" ]
     then
-      success "skipped $src"
+      print_success "skipped $src"
     fi
   fi
 
   if [ "$skip" != "true" ]  # "false" or empty
   then
     ln -s "$1" "$2"
-    success "linked $1 to $2"
+    print_success "linked $1 to $2"
   fi
 }
 
@@ -103,20 +137,15 @@ link_file () {
 # Does not overwrite, used to ensure symlinks are done.
 # Safe to rerun. Will skip all dupes.
 ensure_symlinks () {
-  info ''
-  info 'ensuring symlinks'
-  info ''
+  enter_section 'ensuring symlinks'
 
   local overwrite_all=false backup_all=false skip_all=false
-  info "dot root is $DOTFILES_ROOT"
+
   for src in $(find -H "$DOTFILES_ROOT" -maxdepth 2 -name '*.symlink' -not -path '*.git*')
   do
     dst="$HOME/.$(basename "${src%.*}")"
     link_file "$src" "$dst"
   done
-}
 
-
-test_helper() {
-    echo "I can see the _helper file!"
+  exit_section
 }

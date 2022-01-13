@@ -10,6 +10,8 @@ set -e
 parentDirectory="$(cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd -P)"
 dotfilesDirectory="$(cd "$( dirname "$parentDirectory" )" && pwd -P)"
 
+source $DOTFILES/script/_helpers
+
 displayUsageAndExit() {
 	echo "dot -- dotfiles management"
 	echo ""
@@ -38,17 +40,19 @@ while test $# -gt 0; do
 	shift
 done
 
-# Set macOS defaults
-echo "› $DOTFILES/macos/set-defaults.sh"
+enter_section "Set macOS defaults"
+print_info "$DOTFILES/macos/set-defaults.sh"
 $DOTFILES/macos/set-defaults.sh
+exit_section
 
-# Install homebrew
-echo "› $DOTFILES/homebrew/install.sh 2>&1"
+enter_section "Homebrew"
+print_info "$DOTFILES/homebrew/install.sh 2>&1"
 $DOTFILES/homebrew/install.sh 2>&1
 
 # Upgrade homebrew
-echo "› brew update"
+print_info "brew update"
 brew update
+exit_section
 
 # Install software
 echo "› $DOTFILES/script/install"

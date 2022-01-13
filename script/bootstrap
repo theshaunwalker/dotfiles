@@ -14,16 +14,16 @@ echo ''
 setup_gitconfig () {
   if ! [ -f git/gitconfig.local.symlink ]
   then
-    info 'setup gitconfig'
+    print_info 'setup gitconfig'
 
-    user ' - What is your github author name?'
+    print_prompt ' - What is your github author name?'
     read -e git_authorname
-    user ' - What is your github author email?'
+    print_prompt ' - What is your github author email?'
     read -e git_authoremail
 
     sed -e "s/AUTHORNAME/$git_authorname/g" -e "s/AUTHOREMAIL/$git_authoremail/g" git/gitconfig.local.symlink.example > git/gitconfig.local.symlink
 
-    success 'gitconfig'
+    print_success 'gitconfig'
   fi
 }
 
@@ -33,14 +33,14 @@ ensure_symlinks
 # If we're on a Mac, let's install and setup homebrew.
 if [ "$(uname -s)" == "Darwin" ]
 then
-  info "installing dependencies"
-  if source bin/dot | while read -r data; do info "$data"; done
+  print_info "installing dependencies"
+  if source bin/dot | while read -r data; do print_info "$data"; done
   then
-    success "dependencies installed"
+    print_success "dependencies installed"
   else
-    fail "error installing dependencies"
+    print_error "error installing dependencies"
   fi
 fi
 
 echo ''
-echo '  All installed!'
+print_success '  All installed!'
