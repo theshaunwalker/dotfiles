@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
 info () {
-  printf "\r  [ \033[00;34m..\033[0m ] $1\n"
+  printf "\r  [ \033[0;34m..\033[0m ] $1\n"
 }
 
 user () {
@@ -9,7 +9,7 @@ user () {
 }
 
 success () {
-  printf "\r\033[2K  [ \033[00;32mOK\033[0m ] $1\n"
+  printf "\r\033[2K  [ \033[0;32mOK\033[0m ] $1\n"
 }
 
 fail () {
