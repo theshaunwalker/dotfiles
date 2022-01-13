@@ -6,8 +6,11 @@ set -e
 
 cd "$(dirname $0)"/..
 
-# find the installers and run them iteratively
-find . -name install.sh | while read installer ; do echo "› Running ${installer}" && sh -c "${installer}" ; done
+DOTFILES_ROOT=$(pwd -P)
+
+source script/_helpers
+
+ensure_symlinks
 
 echo ""
 echo "Installing brew packages"
@@ -16,3 +19,7 @@ find . -name brew.txt | \
     while read brewpacks ; \
     do echo "› brew install --quiet $(cat ${brewpacks})" && brew install --quiet $(cat "${brewpacks}") && echo "" ; \
     done
+
+# find the installers and run them iteratively
+find . -name install.sh | while read installer ; do echo "› Running ${installer}" && sh -c "${installer}" ; done
+
