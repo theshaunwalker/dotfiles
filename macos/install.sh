@@ -1,4 +1,4 @@
 if test ! "$(uname)" = "Darwin"
   then
-  exit 0
+  return 0
 fi

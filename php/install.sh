@@ -23,4 +23,4 @@ then
     install_composer
 fi
 
-exit 0
+return 0
