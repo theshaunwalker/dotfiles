@@ -24,6 +24,12 @@ link_file () {
   local overwrite= backup= skip=
   local action=
 
+  if cmp -s $src $dst
+  then
+      info "$src is identical to $dst - skipping symlink"
+      return 0
+  fi
+
   if [ -f "$dst" -o -d "$dst" -o -L "$dst" ]
   then
 
