@@ -1,0 +1,7 @@
+#!/bin/sh
+
+# Quickly host a static web site on an nginx container.
+
+dockernginx() {
+    docker run --name temp-static-website -v $(grealpath $1):/usr/share/nginx/html:ro --rm -p 8888:80 nginx
+}
