@@ -44,3 +44,7 @@ fi
 
 echo ''
 print_success '  All installed!'
+
+enter_section "Homebrew"
+print_info "$DOTFILES/homebrew/bootstrap.sh 2>&1"
+$DOTFILES/homebrew/bootstrap.sh 2>&1

@@ -45,9 +45,6 @@ print_info "$DOTFILES/macos/set-defaults.sh"
 $DOTFILES/macos/set-defaults.sh
 exit_section
 
-enter_section "Homebrew"
-print_info "$DOTFILES/homebrew/install.sh 2>&1"
-$DOTFILES/homebrew/install.sh 2>&1
 
 # Upgrade homebrew
 print_info "brew update"
