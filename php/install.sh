@@ -35,6 +35,9 @@ link_cli_ini () {
 # Symlink custom CLI php ini stuff to homebrew package locations
 link_cli_ini
 
-pecl install xdebug
+if ! pecl list | grep xdebug >/dev/null 2>&1;
+then
+    pecl install xdebug
+fi
 
 return 0
