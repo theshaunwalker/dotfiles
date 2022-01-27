@@ -11,11 +11,7 @@ section_padding () {
 
 enter_section () {
   section_padding
-  printf "[\033[1;37m====\033[0m] \n"
-  section_padding
   printf "[\033[1;37m====\033[0m] $1\n"
-  section_padding
-  printf "[\033[1;37m====\033[0m] \n"
   ((section_count++))
 
   return 0
@@ -23,7 +19,7 @@ enter_section () {
 
 exit_section () {
   ((section_count--))
-  printf "\n\n"
+  printf "\n"
 }
 
 print_output () {
