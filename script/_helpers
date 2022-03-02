@@ -145,3 +145,32 @@ ensure_symlinks () {
 
   exit_section
 }
+
+backup_zshrc () (
+  generate_backup_path() {
+    epoch_time=$(date +%s)
+    backup_filename=".zshrc.bak.$epoch_time"
+
+    echo "$HOME/$backup_filename"
+  }
+  backup_path=$(generate_backup_path)
+
+  tries=0
+  while [ -f "$backup_path" ] && [ $tries -le 2 ];
+  do
+    sleep 1
+    ((tries++))
+    # backup file still exists
+    backup_path=$(generate_backup_path)
+  done
+
+  if [ -f "$backup_path" ];
+  then
+    echo "backup path [$backup_path] already exists. Could not generate a new safe one"
+    exit 1;
+  fi
+  zshrc_path="$HOME/.zshrc"
+
+  cp "$zshrc_path" "$backup_path"
+  echo "$zshrc_path has been backed up to $backup_path"
+)
